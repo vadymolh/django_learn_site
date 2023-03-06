@@ -49,20 +49,25 @@
                 </div>
         
 
-            
+                <div id="messages" class="">
                 Повідомлення
-                {% for message in messages %}
-                <div class="row valign-wrapper">
-                    <div  class="col s12 m12 l12">
-                        <div class="card-panel grey lighten-2" >
-                            <div class="card-content">
-                                <p class="left">{{message.sender.username}}</p>
-                                <p class="left">{{message.text}}</p>
+
+                    {% for message in messages %}
+                    <div class="row valign-wrapper">
+                        <div  class="col s12 m12 l12">
+                            <div class="card-panel grey lighten-2" >
+                                <div class="card-content">
+                                    <p class="left">{{message.sender.username}}</p>
+                                    <br><br>
+                                    <p class="left">{{message.text}}</p>
+                                    <br><br>
+                                    <span>{{message.date_created}}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div> 
-                {% endfor %} 
+                    </div> 
+                    {% endfor %} 
+                </div>
 
                 <div class = "row">
                         <div class="input-field col s10">
@@ -94,7 +99,7 @@
             return;
         }
         messageInput.value = "";
-        fetch("{ url 'chatroom-ajax' other_user.id}",{
+        fetch("{% url 'chatroom-ajax' other_user.id %}",{
             method: "POST",
             credential: "same-origin",
             headers:{
@@ -106,11 +111,28 @@
             for (message of messages){
                 show_message(message);
             }
-        });
+        }).catch(e=> "Error in fetch: "+ e);
     }
 
     function show_message(message){
         console.log(message);
+        let msg_container = document.getElementById("messages");
+        let msg_row = document.createElement("div");
+        msg_row.className = "row valign-wrapper";
+        msg_row.innerHTML = `<div  class="col s12 m12 l12">
+            <div class="card-panel grey lighten-2" >
+                <div class="card-content">
+                    <p class="left">${message.sender}</p>
+                    <br><br>
+                    <p class="left">${message.message}</p>
+                    <br><br>
+                    <span>${message.date_created}</span>
+                </div>
+            </div>
+        </div>`;
+        msg_container.append(msg_row);
+        msg_row.scrollIntoView();
+
     }
     
     messageSendBtn.addEventListener('click', sendMessage);

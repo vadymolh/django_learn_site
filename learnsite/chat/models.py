@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class Message(models.Model):
-    sender = models.OneToOneField(User, 
+    sender = models.ForeignKey(User, 
                                   on_delete=models.CASCADE,
                                   related_name='sent_messages')
     receiver = models.ForeignKey(User, 
