@@ -15,13 +15,23 @@
             {% for user_ in users %}
                 <div class="row valign-wrapper">
                     <div class="col s4 m4 l4">
-                        <a href="/chat/">
+                        <a href="/chat/{{user_.pk}}">
                             <img src="/{{user_.profile.avatar}}" class="circle responsive-img">
                         </a>
                     </div>
                     <div class="col s8 m8 l8">
                         <span class="black-text">
-                            <a href="/chat/"> {{user_.username}}</a>
+                            <a href="/chat/{{user_.pk}}"> {{user_.username}} 
+                                <span class="new badge">
+                                    {% for key, value in unread_msg.items  %}
+                                        {%if key%}
+                                            {{key}}
+                                            {{value}}
+                                        {%endif%}
+                                    {% endfor %}
+                                    
+                                </span>
+                            </a>
                         </span>
                     </div>
                 </div>
@@ -136,6 +146,30 @@
     }
     
     messageSendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (event)=>{
+        if (event.key === "Enter"){
+            sendMessage();
+        }
+    });
+
+    //Automatic message load on timer
+    function load_messages(){
+        fetch("{% url 'chatroom-ajax' other_user.id %}",{
+            method: "GET",
+            credential: "same-origin",
+            headers:{
+                "Content-Type":"aplication/json",
+                "X-CSRFToken" :"{{ csrf_token }}"
+            },
+        }).then(resp => resp.json() ).then(messages =>{
+            for (message of messages){
+                show_message(message);
+            }
+        });
+    }
+
+    setInterval(load_messages, 5000);
+
 </script>
 
 {% endblock %}
