@@ -22,15 +22,16 @@
                     <div class="col s8 m8 l8">
                         <span class="black-text">
                             <a href="/chat/{{user_.pk}}"> {{user_.username}} 
-                                <span class="new badge">
+                                
                                     {% for key, value in unread_msg.items  %}
-                                        {%if key%}
-                                            {{key}}
-                                            {{value}}
+                                        {%if key == user_.username %}
+                                            {%if value %}
+                                                <span class="new badge">
+                                                    {{value}}
+                                                </span>
+                                            {% endif %}
                                         {%endif%}
-                                    {% endfor %}
-                                    
-                                </span>
+                                    {% endfor %}     
                             </a>
                         </span>
                     </div>
