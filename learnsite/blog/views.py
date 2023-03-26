@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Post, Profile, Comment, Category
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .forms import ProfileForm, AddCommentForm
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import ProfileForm, AddCommentForm, RegisterForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -131,7 +131,7 @@ def slug_process(request, slug):
 def register(request):
     # POST incomig
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -144,7 +144,7 @@ def register(request):
                 messages.error(request, f"{msg}")
             return render(request, 'register.html', {'form': form})
     # GET incoming
-    data_dict = {'form': UserCreationForm}
+    data_dict = {'form': RegisterForm}
     return render(request, 'register.html', data_dict)
 
 def logout_request(request):
