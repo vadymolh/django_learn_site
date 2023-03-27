@@ -1,8 +1,44 @@
 {% extends 'navbar.html' %}
 
+    {% block carousel %}
+    <div class="container">
+        <div class="carousel carousel-slider center">
+            {% for post in slide_posts %}
+                <div class="carousel-item white white-text" href="/{{ post.post_slug }}">
+                    <div class="card">    
+                                      
+                        <div class="card-image">
+                            
+                            <img class="center-align responsive-img"
+                            src="/{{ post.img }}">
+                            <a href="/{{ post.post_slug }}">
+                                <span class="card-title">{{ post.title }}</span>
+                            </a>  
+                        </div>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+          </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.carousel');
+            var instances = M.Carousel.init(elems, {
+                fullWidth: true,
+                indicators: false,
+            });
+            setInterval(function(){
+                M.Carousel.getInstance(elems[0]).next();
+            }, 5000);
+          });
+    </script>
+    {% endblock %}
+
     {% block content %}
     <div class="container">
-        <h1>Запрацював блог</h1>
+        
         {% if posts %}
             <div class="row">
                 {% for post in posts %}
