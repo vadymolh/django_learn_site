@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import ProfileForm, AddCommentForm, RegisterForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 # Create your views here.
 
 
@@ -75,7 +76,10 @@ def search_post(request):
     posts=None
     if request.method=="POST":
         text = request.POST.get("searchpost")
-        posts = Post.objects.filter(title__icontains=text)
+        print("SEARCHING POSTS///////////")
+        posts = Post.objects.filter(
+            Q(title__icontains=text.lower()) | Q(title__icontains=text.capitalize()) | Q(title__icontains=text.upper())
+            )
     data_dict = {"posts": posts}
     return render(request, 'blog_main.html', data_dict )
 
