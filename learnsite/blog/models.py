@@ -46,7 +46,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
-    post_slug = models.CharField(max_length=80, default="default_post")
+    post_slug = models.SlugField(max_length=80, default="default_post")
     img = models.ImageField(default = 'blog/static/img/default.png',
                             upload_to='blog/static/img',
                             height_field=None,

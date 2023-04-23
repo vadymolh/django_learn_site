@@ -4,14 +4,14 @@
     <div class="container">
         <div class="carousel carousel-slider center">
             {% for post in slide_posts %}
-                <div class="carousel-item white white-text" href="/{{ post.post_slug }}">
+                <div class="carousel-item white white-text" href="/post/{{ post.post_slug }}">
                     <div class="card">    
                                       
                         <div class="card-image">
                             
                             <img class="center-align responsive-img"
                             src="/{{ post.img }}">
-                            <a href="/{{ post.post_slug }}">
+                            <a href="/post/{{ post.post_slug }}">
                                 <span class="card-title">{{ post.title }}</span>
                             </a>  
                         </div>
@@ -65,7 +65,7 @@
                                  src="/{{ post.img }}">
                             </div>
                             <span class="card-title">
-                                <a href="/{{ post.post_slug }}">{{ post.title }}</a>
+                                <a href="/post/{{ post.post_slug }}">{{ post.title }}</a>
                             </span>
                             <h6>Переглянуло: {{ post.get_views_number }}</h6>
                             <h6>{{ post.created_at }}</h6>
