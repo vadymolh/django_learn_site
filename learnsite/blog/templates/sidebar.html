@@ -5,9 +5,10 @@
   });
 </script>
 
-
+{% load cache %}
 <div class="col s2 l2 m2 ">
     <ul class="collapsible">
+        {% cache 600 sidebar %}
         {% for cat in sidebar %}
             <li>
                 <div class="collapsible-header">{{cat.name}}</div>
@@ -16,6 +17,7 @@
                 </div>
             </li>
         {% endfor %}
+        {% endcache %}
     </ul>
 
 </div>

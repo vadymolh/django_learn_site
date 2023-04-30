@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView
+from .utils import DataMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
@@ -32,20 +34,22 @@ def blog_main(request, *args):
     return render(request, 'blog_main.html', data_dict)
 """
 
-class PostListMain(ListView):
+class PostListMain(DataMixin, ListView):
     model = Post                # усі пости потрапляють у контекст object_list
     context_object_name = 'posts'
     template_name = 'blog_main.html'
     paginate_by = 2
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sidebar'] = Category.objects.all()
+        mix_context = self.get_user_context()
         context['slide_posts'] = Post.objects.all()
-        return context
+        return {**context, **mix_context}
     #def get_queryset(self):     # варіант перевизначення стандартного списку всіх постів
     #    return Post.objects.filter(pk__lte=4)
 
-class ShowPost(DetailView):
+class ShowPost(DataMixin, LoginRequiredMixin ,DetailView):
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
     model = Post
     template_name = "post_view.html"
     slug_url_kwargs = "slug"
@@ -63,9 +67,9 @@ class ShowPost(DetailView):
         context['likes_num'] = context['post'].get_likes_number() 
         context['is_liked'] = context['post'].likes.filter(id=self.request.user.id).exists() 
         context['comments'] = Comment.objects.filter(post=context['post'])
-        context['sidebar'] = Category.objects.all()
+        mix_context = self.get_user_context()
         #form = get_comment_form(request, post)
-        return context
+        return {**context, **mix_context}
 
 class UserRegistration(CreateView):
     form_class = RegisterForm
