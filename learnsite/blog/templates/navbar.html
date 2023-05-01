@@ -20,7 +20,7 @@
               <a href="/" class="brand-logo blue-text text-darken-2">Logo</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                  <form method=POST action="{% url 'search' %}" id="search_nav">
+                  <form method=GET action="{% url 'search' %}" id="search_nav">
                       {% csrf_token %}
                       <input type="search" name="searchpost" placeholder="Шукати">
                   </form>

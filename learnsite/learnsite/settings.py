@@ -35,7 +35,11 @@ SECRET_KEY = 'django-insecure-fawl!uqqqfb-w*=6g80k@n_m1yc=gb*fp=p(2j6t-!b*v656w4
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
-
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 
 # Application definition
 
@@ -50,10 +54,12 @@ INSTALLED_APPS = [
     #'tinymce',
     'blog',
     'chat',
+    'debug_toolbar'
 
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

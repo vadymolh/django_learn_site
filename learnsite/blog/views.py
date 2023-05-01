@@ -44,8 +44,14 @@ class PostListMain(DataMixin, ListView):
         mix_context = self.get_user_context()
         context['slide_posts'] = Post.objects.all()
         return {**context, **mix_context}
-    #def get_queryset(self):     # варіант перевизначення стандартного списку всіх постів
-    #    return Post.objects.filter(pk__lte=4)
+    def get_queryset(self):     # варіант перевизначення стандартного списку всіх постів
+        search_query = self.request.GET.get("searchpost")
+        if search_query:
+            return Post.objects.filter(Q(title__icontains=search_query.lower()) |
+                                Q(title__icontains=search_query.capitalize()) | 
+                                Q(title__icontains=search_query.upper())
+            )
+        return Post.objects.all()
 
 class ShowPost(DataMixin, LoginRequiredMixin ,DetailView):
     login_url = "/login/"

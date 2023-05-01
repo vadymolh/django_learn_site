@@ -15,11 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from .settings import DEBUG
 
-urlpatterns = [
+urlpatterns = [   
     path('chat/',  include('chat.urls')),
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
     #path('tinymce/', include('tinymce.urls')),
     path('', include('blog.urls'))
 ]
+
+if DEBUG:
+    urlpatterns=[ path('__debug__/', include('debug_toolbar.urls')),] \
+    + urlpatterns

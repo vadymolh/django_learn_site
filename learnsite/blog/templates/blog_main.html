@@ -1,5 +1,5 @@
 {% extends 'navbar.html' %}
-
+{% load cache %}
     {% block carousel %}
     <div class="container">
         <div class="carousel carousel-slider center">
@@ -58,6 +58,7 @@
                         {% endif %}
             
                     {% endif %}
+                    
                     <div class="card hoverable">
                         <div class="card-content">
                             <div class="card-image">
@@ -72,11 +73,12 @@
                             <div class="card-content">{{ post.text|truncatechars:100 }}...</div>
                             <br><br><br>
                         </div>
+                    
                     </div>
                 </div>
                 {% endfor %}
             </div>
-
+            
             <div class="row">
                 <div class="col s2 l2">
                 </div>
