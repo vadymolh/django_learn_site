@@ -21,7 +21,7 @@ urlpatterns = [
     path('chat/',  include('chat.urls')),
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
-    #path('tinymce/', include('tinymce.urls')),
+    path('tinymce/', include('tinymce.urls')),
     path('', include('blog.urls'))
 ]
 

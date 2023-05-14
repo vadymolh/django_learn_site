@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
-    #'tinymce',
+    'tinymce',
     'blog',
     'chat',
     'debug_toolbar'

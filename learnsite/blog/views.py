@@ -49,9 +49,8 @@ class PostListMain(DataMixin, ListView):
         if search_query:
             return Post.objects.filter(Q(title__icontains=search_query.lower()) |
                                 Q(title__icontains=search_query.capitalize()) | 
-                                Q(title__icontains=search_query.upper())
-            )
-        return Post.objects.all()
+                                Q(title__icontains=search_query.upper())).prefetch_related('views_number')
+        return Post.objects.all().prefetch_related('views_number')
 
 class ShowPost(DataMixin, LoginRequiredMixin ,DetailView):
     login_url = "/login/"
@@ -164,7 +163,7 @@ def slug_process(request, slug):
     sidebar = Category.objects.all()
     categories = [ c.category_slug for c in sidebar]
     if slug in categories:
-        category_posts = Post.objects.filter(category__category_slug=slug)
+        category_posts = Post.objects.filter(category__category_slug=slug).prefetch_related('views_number')
         return render(request, "category.html", {
             "posts" : category_posts, 
             "sidebar": sidebar
